@@ -1,0 +1,7 @@
+.vs
+
+Gateway/bin
+Gateway/obj
+
+Client/bin
+Client/obj
