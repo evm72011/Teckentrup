@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 
 
-namespace Gateway.Models
+namespace Models
 {
     public class Type
     {

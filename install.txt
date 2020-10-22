@@ -1,2 +1,9 @@
 dotnet add package Microsoft.Extensions.Http
 dotnet add package System.Text.Json
+https://localhost:5001/api/brands?url=https://service-test.teckentrup.biz/products.json
+
+dotnet publish --configuration=Release -o pub
+docker build . -t netcore-rest
+docker run -e Version=1.1 -p 9000:80 netcore-rest
+
+http://localhost:9000/api/brands?url=https://service-test.teckentrup.biz/products.json

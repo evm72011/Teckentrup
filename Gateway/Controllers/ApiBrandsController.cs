@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using Gateway.Models;
 using System.Text.Json;
-
+using Models;
 
 namespace Gateway.Controllers
 {

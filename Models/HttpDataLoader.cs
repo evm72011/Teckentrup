@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Gateway.Models
+namespace Models
 {
     public class HttpDataLoader
     {

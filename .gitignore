@@ -3,6 +3,7 @@
 
 Gateway/bin
 Gateway/obj
+Gateway/pub
 
 Client/bin
 Client/obj
