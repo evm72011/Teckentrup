@@ -10,8 +10,6 @@ namespace Gateway.Models
     {
         public OperationResult LoadData(string url);
 
-        public IEnumerable<Brand> GetAllBrands();
-
         public IEnumerable<string> GetAllBrandNames();
 
         public IEnumerable<Article> GetArticlesByBrandName(string brandName);

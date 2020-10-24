@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace Gateway.Models
 {
-    public class WebBrandRepository : IBrandRepository
+    public class HttpBrandRepository : IBrandRepository
     {
         private IEnumerable<Brand> data = new List<Brand>();
 
@@ -65,11 +65,6 @@ namespace Gateway.Models
             return result;
         }
 
-        public IEnumerable<Brand> GetAllBrands()
-        {
-            return data;
-        }        
-        
         private IEnumerable<Article> GetAllArticles()
         {
             return data.SelectMany(brand => brand.Types).SelectMany(typ => typ.Articles);

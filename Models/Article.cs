@@ -48,7 +48,7 @@ namespace Models
                 if (words[2].Length < 2)
                     return null;
 
-                if (!decimal.TryParse(words[2][0..^1], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal volume))
+                if (!decimal.TryParse(words[2][0..^1].Replace(",","."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal volume))
                     return null;
 
                 return count * volume;

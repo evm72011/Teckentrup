@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text.Json;
 using Models;
 using Gateway.Models;
+using System.Threading;
 
 namespace Gateway.Controllers
 {
@@ -19,15 +20,7 @@ namespace Gateway.Controllers
 
         public ApiController()
         {
-            this.repository = new WebBrandRepository();
-        }
-
-        [HttpGet]
-        [Route("data")]
-        public IEnumerable<Brand> GetData(string url)
-        {
-            repository.LoadData(url);
-            return repository.GetAllBrands();
+            this.repository = new HttpBrandRepository();
         }
 
         [HttpGet]
@@ -85,9 +78,9 @@ namespace Gateway.Controllers
             {
                 AllBrandNames       = repository.GetAllBrandNames(),
                 ArticlesByBrandName = repository.GetArticlesByBrandName(brandName),
-                ExpensivestArticles = repository.GetArticlesWithMaxPrice(),
-                CheapestArticles    = repository.GetArticlesWithMinPrice(),
-                ArticlesWithPrice   = repository.GetArticlesByPrice(price)
+                ArticlesWithMaxPrice = repository.GetArticlesWithMaxPrice(),
+                ArticlesWithMinPrice    = repository.GetArticlesWithMinPrice(),
+                ArticlesByPrice   = repository.GetArticlesByPrice(price)
             };
             return answer;
         }
