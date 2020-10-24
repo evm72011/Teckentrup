@@ -15,78 +15,79 @@ namespace Gateway.Controllers
     [Route("api")]
     public class ApiController : ControllerBase
     {
-        private readonly HttpDataLoader dataLoader;
+        private readonly IBrandRepository repository;
 
-        public ApiController(IHttpClientFactory clientFactory)
+        public ApiController()
         {
-            this.dataLoader = new HttpDataLoader(clientFactory);
+            this.repository = new WebBrandRepository();
         }
 
         [HttpGet]
         [Route("data")]
         public IEnumerable<Brand> GetData(string url)
         {
-            return dataLoader.Get<IEnumerable<Brand>>(url).Result;
+            repository.LoadData(url);
+            return repository.GetAllBrands();
         }
 
         [HttpGet]
         [Route("all_brand_names")]
         public IEnumerable<string> GetAllBrandNames(string url)
         {
-            var data = dataLoader.Get<IEnumerable<Brand>>(url).Result;
-            var repo = new BrandsRepository(data);
-            return repo.GetAllBrandNames();
+            var result = repository.LoadData(url);
+            Response.WrapHeaderWithResult(result);
+            return repository.GetAllBrandNames();
         }
 
         [HttpGet]
-        [Route("all_articles")]
-        public IEnumerable<Article> GetAllArticles(string url, string brandName)
+        [Route("articles_by_brand_name")]
+        public IEnumerable<Article> GetArticlesByBrandName(string url, string brandName)
         {
-            var data = dataLoader.Get<IEnumerable<Brand>>(url).Result;
-            var repo = new BrandsRepository(data);
-            return repo.GetAllArticles();
+            var result = repository.LoadData(url);
+            Response.WrapHeaderWithResult(result);
+            return repository.GetArticlesByBrandName(brandName);
         }
 
         [HttpGet]
         [Route("articles_with_max_price")]
         public IEnumerable<Article> GetArticlesWithMaxPrice(string url)
         {
-            var data = dataLoader.Get<IEnumerable<Brand>>(url).Result;
-            var repo = new BrandsRepository(data);
-            return repo.GetArticlesWithMaxPrice();
+            var result = repository.LoadData(url);
+            Response.WrapHeaderWithResult(result);
+            return repository.GetArticlesWithMaxPrice();
         }
 
         [HttpGet]
         [Route("articles_with_min_price")]
         public IEnumerable<Article> GetArticlesWithMinPrice(string url)
         {
-            var data = dataLoader.Get<IEnumerable<Brand>>(url).Result;
-            var repo = new BrandsRepository(data);
-            return repo.GetArticlesWithMinPrice();
+            var result = repository.LoadData(url);
+            Response.WrapHeaderWithResult(result);
+            return repository.GetArticlesWithMinPrice();
         }
 
         [HttpGet]
         [Route("articles_by_price")]
         public IEnumerable<Article> GetArticlesByPrice(string url, decimal price)
         {
-            var data = dataLoader.Get<IEnumerable<Brand>>(url).Result;
-            var repo = new BrandsRepository(data);
-            return repo.GetArticlesByPrice(price);
+            var result = repository.LoadData(url);
+            Response.WrapHeaderWithResult(result);
+            return repository.GetArticlesByPrice(price);
         }
 
         [HttpGet]
         [Route("answer_to_all_questions")]
         public AnswerToAllQuestions GetAnswerToAllQuestions(string url, string brandName, decimal price)
         {
-            var data = dataLoader.Get<IEnumerable<Brand>>(url).Result;
-            var repo = new BrandsRepository(data);
+            var result = repository.LoadData(url);
+            Response.WrapHeaderWithResult(result);
             var answer = new AnswerToAllQuestions
             {
-                AllBrandNames       = repo.GetAllBrandNames(),
-                ArticlesByBrandName = repo.GetArticlesByBrandName(brandName),
-                ExpensivestArticles = repo.GetArticlesWithMaxPrice(),
-                CheapestArticles    = repo.GetArticlesWithMinPrice(),
-                ArticlesWithPrice   = repo.GetArticlesByPrice(price)
+                AllBrandNames       = repository.GetAllBrandNames(),
+                ArticlesByBrandName = repository.GetArticlesByBrandName(brandName),
+                ExpensivestArticles = repository.GetArticlesWithMaxPrice(),
+                CheapestArticles    = repository.GetArticlesWithMinPrice(),
+                ArticlesWithPrice   = repository.GetArticlesByPrice(price)
             };
             return answer;
         }

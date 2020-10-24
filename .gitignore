@@ -10,3 +10,9 @@ Client/obj
 
 Models/bin
 Models/obj
+
+DummyRestService/bin
+DummyRestService/obj
+
+Tests/bin
+Tests/obj

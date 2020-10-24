@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-
+using System.Globalization;
+using System.Xml.Schema;
 
 namespace Models
 {
@@ -14,24 +15,42 @@ namespace Models
         public string Image { get; set; }
 
         [JsonIgnore]
-        public decimal PricePerLiter
-        {
-            get => (TotalVolume != -1) ? Price / TotalVolume : -1;
-        }
-
-        [JsonIgnore]
-        public decimal TotalVolume
+        public decimal? PricePerLiter
         {
             get
             {
-                var words = Container?.Split(' ');
-                if ((words?.Length > 4) ||
-                    int.TryParse(words[0], out int count) ||
-                    words[0].Length < 2 ||
-                    decimal.TryParse(words[2][0..^1], out decimal volume))
+                if (TotalVolume is null)
                 {
-                    return -1;
+                    return null;
                 }
+                else
+                {
+                    return Price / TotalVolume;
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public decimal? TotalVolume
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Container)) 
+                    return null;
+
+                var words = Container.Split(' ');
+                if (words?.Length != 4) 
+                    return null;
+
+                if (!int.TryParse(words[0], out int count))
+                    return null;
+
+                if (words[2].Length < 2)
+                    return null;
+
+                if (!decimal.TryParse(words[2][0..^1], NumberStyles.Any, CultureInfo.InvariantCulture, out decimal volume))
+                    return null;
+
                 return count * volume;
             }
         }

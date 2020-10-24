@@ -7,7 +7,46 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="515,244,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <TabControl>
+            <TabItem Header="Antworten">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel>
+                        <Expander  Header="Welche Marken gibt es?" IsExpanded="True" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Url:" Grid.Column="0"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding Urls}" SelectedValue="{Binding LinkQuestion1}" IsEditable="True"/>
+                                    <Button Content="Button" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="22" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="GetAnswer1"/>
+                                </Grid>
+                                <DataGrid Name="dataGridAnswer1" AutoGenerateColumns="False" ItemsSource="{Binding}" IsReadOnly="True" Visibility="Collapsed">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="BrandName" Binding="{Binding}" Width="*"></DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <TextBlock Name="textBlockError1" Visibility="Collapsed"></TextBlock>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Welche Artikel der Marke 'Fun' gibt es?">
+                            <StackPanel>
+                                <Button Click="Button_Click">Test</Button>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Welcher Artikel hat den günstigsten/teuersten Preis pro Liter?">
+                        </Expander>
+                        <Expander Header="Welcher Artikel kostet 9.99?">
+                        </Expander>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Tabelle">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>

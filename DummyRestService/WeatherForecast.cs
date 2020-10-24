@@ -1,6 +1,6 @@
 using System;
 
-namespace Gateway
+namespace DummyRestService
 {
     public class WeatherForecast
     {
