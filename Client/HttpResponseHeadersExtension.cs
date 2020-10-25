@@ -9,7 +9,7 @@ namespace Client
     public static class HttpResponseHeadersExtension
     {
         /// <summary>
-        /// Shows that HttpResponseHeader contains the key
+        /// Checks that HttpResponseHeader contains the key
         /// </summary>
         public static bool HasKey(this HttpResponseHeaders headers, string key)
         {
@@ -17,7 +17,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Shows that HttpResponseHeader contains all keys from the list
+        /// Checks that HttpResponseHeader contains all keys from the list
         /// </summary>
         public static bool HasKeys(this HttpResponseHeaders headers, params string[] keys)
         {
