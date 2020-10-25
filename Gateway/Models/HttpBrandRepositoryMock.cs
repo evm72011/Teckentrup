@@ -7,6 +7,10 @@ using Models;
 
 namespace Gateway.Models
 {
+    /// <summary>
+    /// The class inherited from HttpBrandRepository
+    /// is used for unit testing
+    /// </summary>
     public class HttpBrandRepositoryMock: HttpBrandRepository
     {
         public void LoadDataFromJson(string fileName)

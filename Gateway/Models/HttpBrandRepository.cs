@@ -8,6 +8,9 @@ using System.Text.Json;
 
 namespace Gateway.Models
 {
+    /// <summary>
+    /// An Http implementation of IBrandRepository
+    /// </summary>
     public class HttpBrandRepository : IBrandRepository
     {
         protected IEnumerable<Brand> data = new List<Brand>();

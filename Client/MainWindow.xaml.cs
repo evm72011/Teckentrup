@@ -49,7 +49,8 @@ namespace Client
         public string LinkQuestion2 { get; set; }
         public string LinkQuestion3 { get; set; }
         public string LinkQuestion4 { get; set; }
-        
+        public string LinkQuestion5 { get; set; }
+
         public string BrandNameQuestion2 { get; set; }
         public string MinOrMaxQuestion3 { get; set; }
         public decimal PriceQuestion4 { get; set; }
@@ -72,7 +73,8 @@ namespace Client
             MinOrMaxQuestion3 = "min";
             var priceStr = ConfigurationManager.AppSettings["price"];
             PriceQuestion4 = decimal.Parse(priceStr, CultureInfo.InvariantCulture);
-            LinkQuestion1 = LinkQuestion2 = LinkQuestion3 = LinkQuestion4 = ConfigurationManager.AppSettings["defaultTarget"];
+            var defaultTarget = ConfigurationManager.AppSettings["defaultTarget"];
+            LinkQuestion1 = LinkQuestion2 = LinkQuestion3 = LinkQuestion4 = LinkQuestion5 = defaultTarget;
         }
 
         /// <summary>
@@ -132,6 +134,41 @@ namespace Client
             answerUserControl.textBlockError.Visibility = !result.Success ? Visibility.Visible : Visibility.Collapsed;
             ChangeButtonState(sender as Button, true);
         }
+
+        // The code is not very good
+        // But this method can be caalld as a trick
+        // So I did't think too much about it
+        private async void ButtonGetAnswer5_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeButtonState(sender as Button, false);
+            BrandNameQuestion2 = "Fun";
+            PriceQuestion4 = 9.99m;
+            MinOrMaxQuestion3 = "min";
+            var url = $"{baseUrl}/answer_to_all_questions?url={LinkQuestion4}&price=9.99&brandName=Fun";
+            LinkQuestion1 = LinkQuestion2 = LinkQuestion3 = LinkQuestion4 = LinkQuestion5;
+
+            var result = await LoadFromHttpAsync<AnswerToAllQuestions>(url);
+            textBlockError.Text = "Fehler: " + result.Message;
+            textBlockError.Visibility = !result.Success ? Visibility.Visible : Visibility.Collapsed;
+
+            AnswerUserControl1.textBlockError.Visibility = Visibility.Collapsed;
+            AnswerUserControl2.textBlockError.Visibility = Visibility.Collapsed;
+            AnswerUserControl3.textBlockError.Visibility = Visibility.Collapsed;
+            AnswerUserControl4.textBlockError.Visibility = Visibility.Collapsed;
+
+            AnswerUserControl1.dataGridAnswer.Visibility = result.Success ? Visibility.Visible : Visibility.Collapsed;
+            AnswerUserControl2.dataGridAnswer.Visibility = result.Success ? Visibility.Visible : Visibility.Collapsed;
+            AnswerUserControl3.dataGridAnswer.Visibility = result.Success ? Visibility.Visible : Visibility.Collapsed;
+            AnswerUserControl4.dataGridAnswer.Visibility = result.Success ? Visibility.Visible : Visibility.Collapsed;
+
+            AnswerUserControl1.dataGridAnswer.ItemsSource = result.Data.AllBrandNames;
+            AnswerUserControl2.dataGridAnswer.ItemsSource = result.Data.ArticlesByBrandName;
+            AnswerUserControl3.dataGridAnswer.ItemsSource = result.Data.ArticlesWithMinPrice;
+            AnswerUserControl4.dataGridAnswer.ItemsSource = result.Data.ArticlesByPrice;
+
+            ChangeButtonState(sender as Button, true);
+        }
+
 
         private void ChangeButtonState(Button button, bool isEnabled)
         {

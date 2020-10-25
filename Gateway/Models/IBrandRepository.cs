@@ -6,6 +6,9 @@ using Models;
 
 namespace Gateway.Models
 {
+    /// <summary>
+    /// Common interface for Brands repository
+    /// </summary>
     public interface IBrandRepository
     {
         public OperationResult LoadData(string url);

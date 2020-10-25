@@ -28,6 +28,11 @@ namespace Client
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Setups columns in data DataGrid and creates a link to an outer Image control
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="imageForPreview"></param>
         public void SetupControl(Dictionary<string,string> columns, Image imageForPreview)
         {
             dataGridAnswer.Columns.Clear();
@@ -44,6 +49,11 @@ namespace Client
             this.imageForPreview = imageForPreview;
         }
 
+        /// <summary>
+        /// Loads pictura from url and shows it in linked Image control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void LoadImageAsync(object sender, SelectionChangedEventArgs e)
         {
             if (imageForPreview is null)
