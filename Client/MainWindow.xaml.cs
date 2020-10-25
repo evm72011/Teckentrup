@@ -16,7 +16,8 @@ using System.Net.Http;
 using Models;
 using System.Text.Json;
 using System.Globalization;
-
+using System.Configuration;
+using System.IO;
 
 
 namespace Client
@@ -28,15 +29,15 @@ namespace Client
     {
         public List<string> BrandNames { get; set; }
 
-        private readonly string baseUrl = "https://localhost:5001/api";
+        private string baseUrl;
 
         public List<string> Urls
         {
-            get => new List<string>
-            {
-                "https://localhost:9001",
-                "https://servicetest.teckentrup.biz/products.json"
-            };
+            get => 
+                ConfigurationManager.AppSettings.AllKeys
+                    .Where(key => key.StartsWith("targetUrl"))
+                    .Select(key => ConfigurationManager.AppSettings[key])
+                    .ToList(); 
         }
 
         public List<string> MinMax
@@ -57,46 +58,80 @@ namespace Client
         {
             InitializeComponent();
             DataContext = this;
-            BrandNameQuestion2 = "Fun";
+            SetupInitialValues();
+            SetupAnswerControls();
+        }
+
+        /// <summary>
+        /// Loads initial values for fields from App.config
+        /// </summary>
+        private void SetupInitialValues()
+        {
+            baseUrl = ConfigurationManager.AppSettings["baseUrl"];
+            BrandNameQuestion2 = ConfigurationManager.AppSettings["brandName"];
             MinOrMaxQuestion3 = "min";
-            PriceQuestion4 = 9.99m;
+            var priceStr = ConfigurationManager.AppSettings["price"];
+            PriceQuestion4 = decimal.Parse(priceStr, CultureInfo.InvariantCulture);
+            LinkQuestion1 = LinkQuestion2 = LinkQuestion3 = LinkQuestion4 = ConfigurationManager.AppSettings["defaultTarget"];
+        }
+
+        /// <summary>
+        /// Makes necessary settings for showing answers controls
+        /// </summary>
+        private void SetupAnswerControls()
+        {
+            var columns = new Dictionary<string, string>
+            {
+                { "", "BrandName" }
+            };
+            AnswerUserControl1.SetupControl(columns, null);
+            columns = new Dictionary<string, string>
+            {
+                { "Id", "Id" },
+                { "Container", "Container" },
+                { "Price", "Preis" },
+                { "TotalVolume", "Gesamtvolumen" },
+                { "PricePerLiter","Preis pro Liter"}
+            };
+            AnswerUserControl2.SetupControl(columns, articleImage);
+            AnswerUserControl3.SetupControl(columns, articleImage);
+            AnswerUserControl4.SetupControl(columns, articleImage);
         }
 
         private void ButtonGetAnswer1_Click(object sender, RoutedEventArgs e)
         {
             var url = $"{baseUrl}/all_brand_names?url={LinkQuestion1}";
-            GetAndShowAnswer<string>(sender, dataGridAnswer1, textBlockError1, url);
+            GetAndShowAnswer<string>(sender, url, AnswerUserControl1);
         }
 
         private void ButtonGetAnswer2_Click(object sender, RoutedEventArgs e)
         {
             var url = $"{baseUrl}/articles_by_brand_name?url={LinkQuestion2}&brandName={BrandNameQuestion2}";
-            GetAndShowAnswer<Article>(sender, dataGridAnswer2, textBlockError2, url);
+            GetAndShowAnswer<Article>(sender, url, AnswerUserControl2);
         }
 
         private void ButtonGetAnswer3_Click(object sender, RoutedEventArgs e)
         {
             var url = $"{baseUrl}/articles_with_{MinOrMaxQuestion3}_price?url={LinkQuestion3}";
-            GetAndShowAnswer<Article>(sender, dataGridAnswer3, textBlockError3, url);
+            GetAndShowAnswer<Article>(sender, url, AnswerUserControl3);
         }
 
         private void ButtonGetAnswer4_Click(object sender, RoutedEventArgs e)
         {
             var url = $"{baseUrl}/articles_by_price?url={LinkQuestion4}&price={PriceQuestion4.ToString(CultureInfo.InvariantCulture)}";
-            GetAndShowAnswer<Article>(sender, dataGridAnswer4, textBlockError4, url);
+            GetAndShowAnswer<Article>(sender, url, AnswerUserControl4);
         }
 
-        private async void GetAndShowAnswer<T>(object sender, DataGrid dataGridAnswer, TextBlock textBlockError, string url)
+        private async void GetAndShowAnswer<T>(object sender, string url, AnswerUserControl answerUserControl)
         {
             ChangeButtonState(sender as Button, false);
             var result = await LoadFromHttpAsync<List<T>>(url);
-            dataGridAnswer.ItemsSource = result.Data;
-            textBlockError.Text = "Fehler: " + result.Message;
-            dataGridAnswer.Visibility = result.Success ? Visibility.Visible : Visibility.Collapsed;
-            textBlockError.Visibility = !result.Success ? Visibility.Visible : Visibility.Collapsed;
+            answerUserControl.dataGridAnswer.ItemsSource = result.Data;
+            answerUserControl.textBlockError.Text = "Fehler: " + result.Message;
+            answerUserControl.dataGridAnswer.Visibility = result.Success ? Visibility.Visible : Visibility.Collapsed;
+            answerUserControl.textBlockError.Visibility = !result.Success ? Visibility.Visible : Visibility.Collapsed;
             ChangeButtonState(sender as Button, true);
         }
-
 
         private void ChangeButtonState(Button button, bool isEnabled)
         {
@@ -104,11 +139,19 @@ namespace Client
             button.Content = isEnabled ? "Get" : "Loading ...";
         }
 
-
         private async Task<LoadDataResult<T>> LoadFromHttpAsync<T>(string url) where T : class
         {
             var http = new HttpClient();
-            var response = await http.GetAsync(url);
+            HttpResponseMessage response;
+            try
+            {
+                response = await http.GetAsync(url);
+            }
+            catch (Exception e)
+            {
+                return new LoadDataResult<T> { Message = e.Message };
+            }
+
 
             if (!response.IsSuccessStatusCode)
             {
@@ -120,11 +163,10 @@ namespace Client
                 return new LoadDataResult<T> { Message = "Invalid headers in responsse" };
             }
 
-            bool.TryParse(response.Headers.GetValues("success").FirstOrDefault(), out bool success);
             var result = new LoadDataResult<T>
             {
-                Success = success,
-                Message = response.Headers.GetValues("message").FirstOrDefault()
+                Success = response.Headers.GetValue<bool>("success"),
+                Message = response.Headers.GetValue<string>("message")
             };
             var serializeOptions = new JsonSerializerOptions
             {

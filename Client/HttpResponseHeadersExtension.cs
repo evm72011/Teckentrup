@@ -25,5 +25,10 @@ namespace Client
             return true;
         }
 
+        public static T GetValue<T>(this HttpResponseHeaders headers, string key)
+        {
+            var valueStr = headers.GetValues(key).FirstOrDefault();
+            return (T)Convert.ChangeType(valueStr, typeof(T));
+        }
     }
 }

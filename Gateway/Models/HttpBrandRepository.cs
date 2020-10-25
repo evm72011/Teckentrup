@@ -10,7 +10,7 @@ namespace Gateway.Models
 {
     public class HttpBrandRepository : IBrandRepository
     {
-        private IEnumerable<Brand> data = new List<Brand>();
+        protected IEnumerable<Brand> data = new List<Brand>();
 
         public OperationResult LoadData(string url)
         {
@@ -77,7 +77,7 @@ namespace Gateway.Models
 
         public IEnumerable<Article> GetArticlesByBrandName(string brandName)
         {
-            var neededBrands = data.Where(data => data.BrandName == brandName);
+            var neededBrands = data.Where(data => data.BrandName.ToUpper().Trim() == brandName.ToUpper().Trim());
             return neededBrands.SelectMany(brand => brand.Types).SelectMany(typ => typ.Articles);
         }
 

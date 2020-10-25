@@ -19,13 +19,13 @@ namespace Models
         {
             get
             {
-                if (TotalVolume is null)
+                if ((TotalVolume is null) || (TotalVolume == 0))
                 {
                     return null;
                 }
                 else
                 {
-                    return Price / TotalVolume;
+                    return Math.Round((Price / TotalVolume).Value, 2);
                 }
             }
         }
@@ -46,6 +46,9 @@ namespace Models
                     return null;
 
                 if (words[2].Length < 2)
+                    return null;
+
+                if (words[2][^1..] != "L")
                     return null;
 
                 if (!decimal.TryParse(words[2][0..^1].Replace(",","."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal volume))

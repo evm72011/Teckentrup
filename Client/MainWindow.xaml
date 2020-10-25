@@ -5,12 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="TECKENTRUP" Height="500" Width="800">
     <Window.Resources>
-        <Style x:Key="ErrorField">
-            <Setter Property="Control.Margin" Value="5,0,0,0" />
-            <Setter Property="Control.Foreground" Value="Red" />
-        </Style>
         <Style TargetType="Expander">
             <Setter Property="Control.Margin" Value="5,3,5,0" />
             <Setter Property="Control.BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" />
@@ -40,12 +36,7 @@
                         <ComboBox Grid.Column="1" ItemsSource="{Binding Urls}" Text="{Binding LinkQuestion1}" IsEditable="True"/>
                         <Button Content="Get" Grid.Column="3" Click="ButtonGetAnswer1_Click"/>
                     </Grid>
-                    <DataGrid Name="dataGridAnswer1" AutoGenerateColumns="False" ItemsSource="{Binding}" IsReadOnly="True" Visibility="Collapsed" RowHeaderWidth="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="BrandName" Binding="{Binding}" Width="*"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <TextBlock Name="textBlockError1" Visibility="Collapsed" Style="{StaticResource ErrorField}"/>
+                    <local:AnswerUserControl x:Name="AnswerUserControl1"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Welche Artikel der Marke 'Fun' gibt es?">
@@ -62,16 +53,7 @@
                         <TextBox Grid.Column="2" Text="{Binding BrandNameQuestion2}"></TextBox>
                         <Button Grid.Column="3" Content="Get" Click="ButtonGetAnswer2_Click"/>
                     </Grid>
-                    <DataGrid Name="dataGridAnswer2" AutoGenerateColumns="False" ItemsSource="{Binding}" IsReadOnly="True" Visibility="Collapsed" RowHeaderWidth="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Container" Binding="{Binding Path=Container}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Preis" Binding="{Binding Path=Price}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Gesamtvolumen" Binding="{Binding Path=TotalVolume}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Preis pro Liter" Binding="{Binding Path=PricePerLiter}" Width="*"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <TextBlock Name="textBlockError2" Visibility="Collapsed" Style="{StaticResource ErrorField}"/>
+                    <local:AnswerUserControl x:Name="AnswerUserControl2"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Welcher Artikel hat den günstigsten/teuersten Preis pro Liter?">
@@ -88,16 +70,7 @@
                         <ComboBox Grid.Column="2" ItemsSource="{Binding MinMax}" Text="{Binding MinOrMaxQuestion3}"/>
                         <Button Grid.Column="3" Content="Get" Click="ButtonGetAnswer3_Click"/>
                     </Grid>
-                    <DataGrid Name="dataGridAnswer3" AutoGenerateColumns="False" ItemsSource="{Binding}" IsReadOnly="True" Visibility="Collapsed" RowHeaderWidth="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Container" Binding="{Binding Path=Container}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Preis" Binding="{Binding Path=Price}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Gesamtvolumen" Binding="{Binding Path=TotalVolume}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Preis pro Liter" Binding="{Binding Path=PricePerLiter}" Width="*"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <TextBlock Name="textBlockError3" Visibility="Collapsed" Style="{StaticResource ErrorField}"/>
+                    <local:AnswerUserControl x:Name="AnswerUserControl3"/>
                 </StackPanel>
             </Expander>
             <Expander Header="Welcher Artikel kostet 9.99?">
@@ -114,18 +87,10 @@
                         <TextBox Grid.Column="2" Text="{Binding PriceQuestion4}"/>
                         <Button Grid.Column="3" Content="Get" Click="ButtonGetAnswer4_Click"/>
                     </Grid>
-                    <DataGrid Name="dataGridAnswer4" AutoGenerateColumns="False" ItemsSource="{Binding}" IsReadOnly="True" Visibility="Collapsed" RowHeaderWidth="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Container" Binding="{Binding Path=Container}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Preis" Binding="{Binding Path=Price}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Gesamtvolumen" Binding="{Binding Path=TotalVolume}" Width="*"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Preis pro Liter" Binding="{Binding Path=PricePerLiter}" Width="*"></DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <TextBlock Name="textBlockError4" Visibility="Collapsed" Style="{StaticResource ErrorField}"/>
+                    <local:AnswerUserControl x:Name="AnswerUserControl4"/>
                 </StackPanel>
             </Expander>
+            <Image Name="articleImage" MaxHeight="150" Stretch="Uniform"></Image>
         </StackPanel>
     </Grid>
 </Window>

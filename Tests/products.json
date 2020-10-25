@@ -1,7 +1,7 @@
 [
   {
     "id": 11,
-    "brandName": "Amigo-Dummy",
+    "brandName": "Amigo",
     "types": [
       {
         "id": 110012,
@@ -19,7 +19,7 @@
   },
   {
     "id": 12,
-    "brandName": "Meiers-Dummy",
+    "brandName": "Meiers",
     "types": [
       {
         "id": 110013,
@@ -37,7 +37,7 @@
   },
   {
     "id": 13,
-    "brandName": "Beres-Dummy",
+    "brandName": "Beres",
     "types": [
       {
         "id": 110014,
@@ -67,7 +67,7 @@
   },
   {
     "id": 14,
-    "brandName": "Zuber-Dummy",
+    "brandName": "Zuber",
     "types": [
       {
         "id": 110016,
@@ -103,7 +103,7 @@
   },
   {
     "id": 15,
-    "brandName": "Keller-Dummy",
+    "brandName": "Keller",
     "types": [
       {
         "id": 110018,
@@ -139,7 +139,7 @@
   },
   {
     "id": 16,
-    "brandName": "Rausch-Dummy",
+    "brandName": "Rausch",
     "types": [
       {
         "id": 110020,
