@@ -34,7 +34,7 @@ namespace Gateway.Controllers
 
         [HttpGet]
         [Route("articles_by_brand_name")]
-        public IEnumerable<Article> GetArticlesByBrandName(string url, string brandName = "")
+        public IEnumerable<Article> GetArticlesByBrandName(string url, string brandName)
         {
             var result = repository.LoadData(url);
             Response.WrapHeaderWithResult(result);
@@ -70,7 +70,7 @@ namespace Gateway.Controllers
 
         [HttpGet]
         [Route("answer_to_all_questions")]
-        public AnswerToAllQuestions GetAnswerToAllQuestions(string url, decimal price, string brandName = "")
+        public AnswerToAllQuestions GetAnswerToAllQuestions(string url, decimal price, string brandName)
         {
             var result = repository.LoadData(url);
             Response.WrapHeaderWithResult(result);

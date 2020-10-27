@@ -80,7 +80,15 @@ namespace Gateway.Models
 
         public IEnumerable<Article> GetArticlesByBrandName(string brandName)
         {
-            var neededBrands = data.Where(data => data.BrandName.ToUpper().Trim() == brandName.ToUpper().Trim());
+            IEnumerable<Brand> neededBrands;
+            if (string.IsNullOrEmpty(brandName))
+            {
+                neededBrands = data.Where(data => string.IsNullOrEmpty(data.BrandName));
+            }
+            else
+            {
+                neededBrands = data.Where(data => data.BrandName.ToUpper() == brandName.ToUpper());
+            }
             return neededBrands.SelectMany(brand => brand.Types).SelectMany(typ => typ.Articles);
         }
 

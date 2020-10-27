@@ -1,0 +1,81 @@
+[
+  {
+    "id": 1,
+    "brandName": "Brand1",
+    "types": [
+      {
+        "id": 11,
+        "type": "Type1",
+        "articles": [
+          {
+            "id": 111,
+            "container": "20 x 0,5L (Glas)",
+            "price": 100.00,
+            "image": "https://dummyimage.com/300.png/09f/fff&text=111"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "brandName": "Brand2",
+    "types": [
+      {
+        "id": 12,
+        "type": "Type2",
+        "articles": [
+          {
+            "id": 112,
+            "container": "26 x 0,5L (Glas)",
+            "price": 0.13,
+            "image": "https://dummyimage.com/300.png/09f/fff&text=112"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "brandName": "Brand3",
+    "types": [
+      {
+        "id": 13,
+        "type": "Type3",
+        "articles": [
+          {
+            "id": 113,
+            "container": "20 x 0,5L (Glas)",
+            "price": 20.20,
+            "image": "https://dummyimage.com/300.png/09f/fff&text=113"
+          },
+          {
+            "id": 114,
+            "container": "2error0 x 0,5L (Glas)",
+            "price": 21.99,
+            "image": "https://dummyimage.com/300.png/09f/fff&text=114"
+          }
+
+        ]
+      },
+      {
+        "id": 14,
+        "type": "Type4",
+        "articles": [
+          {
+            "id": 115,
+            "container": "20 x 0,5L (Glas)",
+            "price": 10.00,
+            "image": "https://dummyimage.com/300.png/09f/fff&text=115"
+          },
+          {
+            "id": 116,
+            "container": "6 x 1,00L (Glas)",
+            "price": 5.00,
+            "image": "https://dummyimage.com/300.png/09f/fff&text=116"
+          }
+        ]
+      }
+    ]
+  }
+]
